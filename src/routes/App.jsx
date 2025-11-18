@@ -1,7 +1,7 @@
 import { HashRouter, Routes, Route } from "react-router-dom";
 import { Home } from "./Home/index"
-import { Trending } from "./Trending/index"
-import { Favorites } from "./Favorites/index";
+import { Trending } from "./Home/Trending/index";
+import { Favorites } from "./Home/Favorites/index";
 
 // rutas de mi app
 

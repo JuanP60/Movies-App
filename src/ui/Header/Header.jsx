@@ -7,9 +7,9 @@ function Header() {
         <nav className="flex flex-row justify-between">
             <Link to="/">Logo</Link>
             <ul className="flex flex-row gap-2">
-                <Link>Search</Link>
-                <Link to="/trending">Trending</Link>
-                <Link to="/favorites">Favorites</Link>
+                <li><Link>Search</Link></li>
+                <li><Link to="/trending">Trending</Link></li>
+                <li><Link to="/favorites">Favorites</Link></li>
             </ul>
         </nav>
     );
