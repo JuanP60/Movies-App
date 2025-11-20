@@ -4,13 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 function MoviesDashBoard() {
 
-    const {
-        fetchRatedMovies, 
-        movies, 
-        error, 
-        loading
-    } = useApiTMDB();
-
+    const {state, fetchRatedMovies} = useApiTMDB();
     const navigate = useNavigate(); // se debe definir de primero ya que se rompe debajo de los returns.
 
     const API = "https://api.themoviedb.org/3/movie/popular?language=es-MX";
@@ -21,10 +15,10 @@ function MoviesDashBoard() {
 
     React.useEffect(() => {
         fetchRatedMovies({API});
-    }, [])
+    }, []);
     
-    if (!!error) return <p>Error en la consulta</p>
-    if (!!loading) return <p>Cargando...</p>
+    if (!!state.error) return <p>Error en la consulta</p>
+    if (!!state.loading) return <p>Cargando...</p>
 
     const routeMovie = (id) => {
         navigate(`/movie/${id}`);
@@ -33,7 +27,7 @@ function MoviesDashBoard() {
     return (
         <div className="flex justify-center max-w-10xl mt-80">
             <ul className="flex flex-wrap gap-5 justify-center">
-                {movies?.map(movie => (
+                {state.movies?.map(movie => (
                     <li key={movie.id} >
                         <div className="overflow-hidden rounded-xl cursor-pointer transition transform hover:-translate-y-2 hover:scale-105">
                             <img 
@@ -48,7 +42,5 @@ function MoviesDashBoard() {
         </div>
     )
 }
-
-//LINEA COMENTADA: <p className="text-center">{movie.title}</p> no es necesario mostrar el nombre de la pelicula en esta seccion del hom
 
 export { MoviesDashBoard };

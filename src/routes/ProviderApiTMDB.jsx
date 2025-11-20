@@ -4,12 +4,19 @@ import React, {useContext} from "react";
 const MoviesContext = React.createContext();
 
 export function ApiProvider({children}) {
+    // estados home
+    const [state, setState] = React.useState({
+        movies: [],
+        error: "",
+        loading: true,
+    });
 
-    //estados
-    const [movies, setMovies] = React.useState([]);
-    const [error, setError] = React.useState("");
-    const [loading, setLoading] = React.useState(true);
-    // nuevo estado para movieDetails? + fetch solo para movieDetails
+    // estados para ruta de movie details.
+    const [movieDetailsState, setMovieDetailsState] = React.useState({
+        movieDetails: {},
+        errorMovieDetails: "",
+        loadingMovieDetails: true,
+    });
 
     // crear env para api_key
     const API_KEY = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwMTkyNDk5MDkwOGE4YWY2ODFmMjhkYTk5MjRkM2ZiNSIsIm5iZiI6MTc2MzMzNjQyNy4zOTUsInN1YiI6IjY5MWE2MGViYTE2OWY1ZjMxMTQ0Njg0OSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.rMrFZ334iZwue2dMoafUSwb8a-QdXeeoeVEKGFhto34";
@@ -28,16 +35,53 @@ export function ApiProvider({children}) {
             const data = await response.json(); // pasamos a json
             const result = data.results; // data ya transformada
 
-            setMovies(result || []); // por si no trae nada le asignamos un array vacio.
-            setError("");
+            // actualizamos el estado:
+            setState(prev => ({
+                ...prev,
+                movies: result || [],
+                error: ""
+            }));
         } catch (error) {
-            setError("No se pudo traer la data");
+            setState(prev => ({
+                ...prev,
+                error: "No se pudo traer la data"
+            }));
+            console.log("No movies were filtered");
         } finally {
-            setLoading(false);
+            setState(prev => ({
+                ...prev,
+                loading: false
+            }));
         }
     }
+
+    // funcion para traer info por movie:
+    
+    async function fetchMovieDetails({movieId}) {
+        try {
+            const movieDetails = state.movies.find(movie => movie.id === movieId); // aca tenemos la movie que el user abrio
+            console.log(movieDetails);
+            setMovieDetailsState(prev => ({
+                ...prev,
+                movieDetails: movieDetails || {},
+                errorMovieDetails: "",
+            }));
+        } catch (error) {
+            setMovieDetailsState(prev => ({
+                ...prev,
+                errorMovieDetails: "No se pudo traer la data"
+            }));
+        } finally {
+            setMovieDetailsState(prev => ({
+                ...prev,
+                loadingMovieDetails: false,
+            }));
+        }
+    }
+
+
         
-    const moviesData = {movies, error, loading, fetchRatedMovies}; // pasamos esos datos a los componentes que lo necesiten con el provider y el context creado
+    const moviesData = {state, fetchRatedMovies, movieDetailsState, fetchMovieDetails}; // pasamos esos datos a los componentes que lo necesiten con el provider y el context creado
 
     return (
         <MoviesContext.Provider value={moviesData}>
