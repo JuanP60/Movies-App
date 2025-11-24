@@ -7,14 +7,13 @@ function MoviesDashBoard() {
     const {state, fetchRatedMovies} = useApiTMDB();
     const navigate = useNavigate(); // se debe definir de primero ya que se rompe debajo de los returns.
 
-    const API = "https://api.themoviedb.org/3/movie/popular?language=es-MX";
     const baseURL = "https://image.tmdb.org/t/p/"; // para construir imagenes, url base
     const size = "w300"; // tamaño imagen, con este tamaño quedad bien en pc y el responsive ya esta practicamente hecho, tailwind + flex
 
     // usamos el fetch para cargar datos una vez el componente cargue:
 
     React.useEffect(() => {
-        fetchRatedMovies({API});
+        fetchRatedMovies();
     }, []);
     
     if (!!state.error) return <p>Error en la consulta</p>

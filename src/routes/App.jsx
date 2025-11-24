@@ -4,6 +4,7 @@ import { Home } from "./Home/index"
 import { Trending } from "./Home/Trending/index";
 import { Favorites } from "./Home/Favorites/index";
 import { MovieInfo } from "./Home/MovieInfo/MovieInfo";
+import { Categories } from "./Home/Categories/Categories";
 
 // rutas de mi app
 
@@ -16,6 +17,7 @@ function App () {
           <Route path="/movie/:id" element={<MovieInfo />}/>
           <Route path="/trending" element={<Trending />} />
           <Route path="/favorites" element={<Favorites />}/>
+          <Route path="/category/:categoryId" element={<Categories />}/>
           <Route path="*" element={<Home />} />
         </Routes>
       </ApiProvider>

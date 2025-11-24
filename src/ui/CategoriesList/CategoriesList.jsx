@@ -1,45 +1,33 @@
 import React from "react";
+import { useApiTMDB } from "../../routes/ProviderApiTMDB";
+import { useNavigate } from "react-router-dom";
 
 function CategoriesList() {
 
-    const [categories, setCategories] = React.useState([]);
+    const {fetchCategories, categories} = useApiTMDB();
+    const navigate = useNavigate();
 
-    // endpoints para traer todas las categorias disponibles
-    const API_CATEGORIES = "https://api.themoviedb.org/3/genre/movie/list";
-    const API_KEY = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwMTkyNDk5MDkwOGE4YWY2ODFmMjhkYTk5MjRkM2ZiNSIsIm5iZiI6MTc2MzMzNjQyNy4zOTUsInN1YiI6IjY5MWE2MGViYTE2OWY1ZjMxMTQ0Njg0OSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.rMrFZ334iZwue2dMoafUSwb8a-QdXeeoeVEKGFhto34";
-    const options = {
-        method: 'GET',
-        headers: {
-        accept: 'application/json',
-        Authorization: `Bearer ${API_KEY}`
-        }
-    };
-
+    // podriamos agregar en el apiprovider manejo dde errores para el fetch de categories.
     React.useEffect(() => {
-        async function fetchCategories() {
-            try {
-                const request = await fetch(API_CATEGORIES, options);
-                const response = await request.json(); // pasamos a json la respuesta que se supone ser todas la categories
-                const data = response.genres;
-
-                if (data && data.length > 0) {
-                    setCategories(data);
-                    console.log(data);
-                }
-
-            } catch (error) {
-                console.log("Error en fetch de categories")
-            }
-        }
         fetchCategories();
     }, [])
+
+    // funcion para enviar a la ruta por categoria
+
+    const categoriesRoute = (categoryId) => {
+        navigate(`/category/${categoryId}`);
+    };
 
     return (
         <div className="flex flex-col items-center">
             <p>Categorias</p>
             <ul className="flex gap-1.5">
                 {categories.map(category => (
-                    <li key={category.id}>{category.name}</li>
+                    <li 
+                    key={category.id} 
+                    className="cursor-pointer"
+                    onClick={() => categoriesRoute(category.id)}
+                    >{category.name}</li>
                 ))}
             </ul>
         </div>
