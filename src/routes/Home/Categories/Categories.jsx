@@ -22,6 +22,8 @@ function Categories () {
         navigate(`/movie/${id}`);
     }
 
+    // todo, traer nombre de categoria a esta ruta.
+
     return (
         <>
             <Header />

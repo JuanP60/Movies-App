@@ -19,6 +19,8 @@ export function ApiProvider({children}) {
     });
 
     const [categories, setCategories] = React.useState([]);
+    const [categoriesPerMovie, setCategoriesPerMovie] = React.useState([]);
+    const [recommendedMovies, setRecommendedMovies] = React.useState([]); // para movies recomendadas en la vista movieDetails
 
     // estados para la ruta de categories
     const [moviesPerCategories, setMoviesPerCategories] = React.useState({
@@ -84,23 +86,39 @@ export function ApiProvider({children}) {
     async function fetchMovieDetails({movieId}) {
         try {
             const movieDetails = state.movies?.find(movie => movie.id === movieId); // aca tenemos la movie que el user abrio
-    
-            if (movieDetails) {
+            const categoriesPerMovieFilter = categories.filter(category => movieDetails.genre_ids.includes(category.id)); // array de id + category name
+            // comparando 2 listas:
+            const similarMovies = state.movies?.filter(similar => 
+                similar.id !== movieDetails.id && 
+                similar.genre_ids.some(id => movieDetails.genre_ids.includes(id)));
+      
+            if (movieDetails && categoriesPerMovieFilter) {
                 setMovieDetailsState(prev => ({
-                    ...prev,
+                    ...prev,    
                     movieDetails: movieDetails || {},
                     errorMovieDetails: "",
                 }));
+
+                setCategoriesPerMovie(categoriesPerMovieFilter);
+                setRecommendedMovies(similarMovies);
             } else {
                 // si la movie no esta en el array que usamos en el home, buscamos en el estado usado para las categorias.
                 const movieDetailsCtg = moviesPerCategories.moviesCtg?.find(movie => movie.id === movieId);
+                const categoriesPerMovieFilter = categories.filter(category => movieDetailsCtg.genre_ids.includes(category.id)); // mi lista dde genre ids incluye algun id del array categories?
 
-                if (movieDetailsCtg) {
+                const similarMovies = moviesPerCategories.moviesCtg?.filter(similar => 
+                    similar.id !== movieDetailsCtg.id && 
+                    similar.genre_ids.some(id => movieDetailsCtg.genre_ids.includes(id)));
+
+                if (movieDetailsCtg && categoriesPerMovieFilter) {
                     setMovieDetailsState(prev => ({
                         ...prev,
                         movieDetails: movieDetailsCtg || {},
                         errorMovieDetails: "",
                     })); 
+
+                    setCategoriesPerMovie(categoriesPerMovieFilter);
+                    setRecommendedMovies(similarMovies);
                 } else {
                     setMovieDetailsState(prev => ({
                         ...prev,
@@ -130,7 +148,7 @@ export function ApiProvider({children}) {
         const request = await fetch(API_CATEGORIES, options);
         const response = await request.json(); // pasamos a json la respuesta que se supone ser todas la categories
         const data = response.genres;
-
+     
         if (data && data.length > 0) {
             setCategories(data);
         }
@@ -159,6 +177,7 @@ export function ApiProvider({children}) {
                         moviesCtg: fetchedMovies || [],
                         errorMoviesCtg: ""
                     })); 
+                    console.lof(moviesPerCategories);
                 }
             }
         } catch (error) {
@@ -182,7 +201,9 @@ export function ApiProvider({children}) {
         fetchCategories, 
         categories,
         fetchMoviesPerCategory,
-        moviesPerCategories
+        moviesPerCategories,
+        categoriesPerMovie,
+        recommendedMovies
     }; // pasamos esos datos a los componentes que lo necesiten con el provider y el context creado
 
     return (

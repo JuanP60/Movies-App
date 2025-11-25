@@ -15,13 +15,13 @@ function MoviesDashBoard() {
     React.useEffect(() => {
         fetchRatedMovies();
     }, []);
-    
-    if (!!state.error) return <p>Error en la consulta</p>
-    if (!!state.loading) return <p>Cargando...</p>
 
     const routeMovie = (id) => {
         navigate(`/movie/${id}`);
     }
+    
+    if (!!state.error) return <p>Error en la consulta</p>
+    if (!!state.loading) return <p>Cargando...</p>
 
     return (
         <div className="flex justify-center max-w-10xl mt-80">
