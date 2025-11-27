@@ -14,8 +14,8 @@ function CategoriesList() {
 
     // funcion para enviar a la ruta por categoria
 
-    const categoriesRoute = (categoryId) => {
-        navigate(`/category/${categoryId}`);
+    const categoriesRoute = (id, name) => {
+        navigate(`/category/${id}/${name}`);
     };
 
     return (
@@ -26,7 +26,7 @@ function CategoriesList() {
                     <li 
                     key={category.id} 
                     className="cursor-pointer"
-                    onClick={() => categoriesRoute(category.id)}
+                    onClick={() => categoriesRoute(category.id, category.name)}
                     >{category.name}</li>
                 ))}
             </ul>

@@ -43,12 +43,6 @@ export function ApiProvider({children}) {
     const API = "https://api.themoviedb.org/3/movie/popular?language=es-MX";
     //api para categorias:
     const API_CATEGORIES = "https://api.themoviedb.org/3/genre/movie/list";
-    // urls para la seccion de categories (traer primeras 3 paginas de movies que cumplan con el category id)
-    const urls = [
-        `https://api.themoviedb.org/3/discover/movie?&page=1`,
-        `https://api.themoviedb.org/3/discover/movie?&page=2`,
-        `https://api.themoviedb.org/3/discover/movie?&page=3`,
-    ];
 
     // este es el llamado inicial a la API para obtener peliculas para el home.
 
@@ -63,7 +57,7 @@ export function ApiProvider({children}) {
                 setState(prev => ({
                     ...prev,
                     movies: result || [],
-                    error: ""
+                    error: "",
                 }));
             }
 
@@ -85,62 +79,40 @@ export function ApiProvider({children}) {
     
     async function fetchMovieDetails({movieId}) {
         try {
-            const movieDetails = state.movies?.find(movie => movie.id === movieId); // aca tenemos la movie que el user abrio
-            const categoriesPerMovieFilter = categories.filter(category => movieDetails.genre_ids.includes(category.id)); // array de id + category name
-            // comparando 2 listas:
-            const similarMovies = state.movies?.filter(similar => 
-                similar.id !== movieDetails.id && 
-                similar.genre_ids.some(id => movieDetails.genre_ids.includes(id)));
-      
-            if (movieDetails && categoriesPerMovieFilter) {
+            const resMovie = await fetch(
+            `https://api.themoviedb.org/3/movie/${movieId}?language=es-MX`,
+            options
+            );
+            const movieData = await resMovie.json(); // ya aca tengo la movie que abrio el user, tambien devuelve ya los genres con sus id, nombre
+            const categoriesPerMovieFilter = movieData.genres; // movieData es 1 objeto, acceddemos a las propiedades directamente.
+
+            // traer movies similares desde el endpoint correcto de la api:
+
+            const resSimilar = await fetch(
+            `https://api.themoviedb.org/3/movie/${movieId}/similar?language=es-MX`,
+            options
+            );
+            const similarData = await resSimilar.json(); // ya el enpoint me relaciona las similares con la movie id
+
+            if (movieData) {
                 setMovieDetailsState(prev => ({
                     ...prev,    
-                    movieDetails: movieDetails || {},
+                    movieDetails: movieData || {},
                     errorMovieDetails: "",
+                    loadingMovieDetails: false
                 }));
-
                 setCategoriesPerMovie(categoriesPerMovieFilter);
-                setRecommendedMovies(similarMovies);
-            } else {
-                // si la movie no esta en el array que usamos en el home, buscamos en el estado usado para las categorias.
-                const movieDetailsCtg = moviesPerCategories.moviesCtg?.find(movie => movie.id === movieId);
-                const categoriesPerMovieFilter = categories.filter(category => movieDetailsCtg.genre_ids.includes(category.id)); // mi lista dde genre ids incluye algun id del array categories?
-
-                const similarMovies = moviesPerCategories.moviesCtg?.filter(similar => 
-                    similar.id !== movieDetailsCtg.id && 
-                    similar.genre_ids.some(id => movieDetailsCtg.genre_ids.includes(id)));
-
-                if (movieDetailsCtg && categoriesPerMovieFilter) {
-                    setMovieDetailsState(prev => ({
-                        ...prev,
-                        movieDetails: movieDetailsCtg || {},
-                        errorMovieDetails: "",
-                    })); 
-
-                    setCategoriesPerMovie(categoriesPerMovieFilter);
-                    setRecommendedMovies(similarMovies);
-                } else {
-                    setMovieDetailsState(prev => ({
-                        ...prev,
-                        movieDetails: {},
-                        errorMovieDetails: "La pelicula no existe en la data base",
-                    })); 
-                }
+                setRecommendedMovies(similarData.results);
             }
-
         } catch (error) {
             setMovieDetailsState(prev => ({
                 ...prev,
-                errorMovieDetails: "No se pudo traer la data"
-            }));
-        } finally {
-            setMovieDetailsState(prev => ({
-                ...prev,
-                loadingMovieDetails: false,
+                movieDetails: {},
+                errorMovieDetails: "No se pudo traer la data",
             }));
         }
     }
-
+    
     // para traer todas las cateogories y mostrarlas en el dashboard.
 
     async function fetchCategories() {
@@ -159,26 +131,24 @@ export function ApiProvider({children}) {
 
     // para mostrar las movies que cumplan con el cateegory id:
 
-    async function fetchMoviesPerCategory({categoryId}){
+    async function fetchMoviesPerCategory({catIdNumber}){
         try {
-            const request = await Promise.all(urls.map(api => fetch(api, options)));
-            const response =  await Promise.all(request.map(json => json.json()));
-            // unir los 3 fetch en 1 solo array, porque en response tenemos un objeto de 3 arrays (1 fecth por pagina)
-            const data = response.flatMap(data => data.results); // 3 arrays concatenados con flatMap en 1 solo array
+            // const request = await Promise.all(urls.map(api => fetch(api, options)));
+            // const response =  await Promise.all(request.map(json => json.json()));
+            // // unir los 3 fetch en 1 solo array, porque en response tenemos un objeto de 3 arrays (1 fecth por pagina)
+            // const data = response.flatMap(data => data.results); // 3 arrays concatenados con flatMap en 1 solo array
 
-            if (data && data.length > 0) {
-                // filtro por categoria
+            const API_CATEGORIES_RUTA = `https://api.themoviedb.org/3/discover/movie?with_genres=${catIdNumber}&sort_by=popularity.desc&include_adult=false&page=1`;
+            const request = await fetch(API_CATEGORIES_RUTA, options);
+            const resolve = await request.json(); // esto si es un array
 
-                const fetchedMovies = data.filter((movie) => movie.genre_ids.includes(categoryId));
-
-                if (fetchedMovies.length > 0) {
-                    setMoviesPerCategories(prev => ({
-                        ...prev,
-                        moviesCtg: fetchedMovies || [],
-                        errorMoviesCtg: ""
-                    })); 
-                    console.lof(moviesPerCategories);
-                }
+            if (resolve.results.length > 0) {
+                // ya vienen filtradas las movies per category con el anterior endpoint.
+                setMoviesPerCategories(prev => ({
+                    ...prev,
+                    moviesCtg: resolve.results || [],
+                    errorMoviesCtg: ""
+                })); 
             }
         } catch (error) {
             setMoviesPerCategories(prev => ({

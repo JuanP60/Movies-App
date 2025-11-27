@@ -17,7 +17,7 @@ function App () {
           <Route path="/movie/:id" element={<MovieInfo />}/>
           <Route path="/trending" element={<Trending />} />
           <Route path="/favorites" element={<Favorites />}/>
-          <Route path="/category/:categoryId" element={<Categories />}/>
+          <Route path="/category/:id/:name" element={<Categories />}/>
           <Route path="*" element={<Home />} />
         </Routes>
       </ApiProvider>
