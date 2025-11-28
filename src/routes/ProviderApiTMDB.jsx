@@ -4,7 +4,7 @@ import React, {useContext} from "react";
 const MoviesContext = React.createContext();
 
 export function ApiProvider({children}) {
-    // estados home
+    // estados home, peliculas iniciales
     const [state, setState] = React.useState({
         movies: [],
         error: "",
@@ -18,16 +18,22 @@ export function ApiProvider({children}) {
         loadingMovieDetails: true,
     });
 
-    const [categories, setCategories] = React.useState([]);
-    const [categoriesPerMovie, setCategoriesPerMovie] = React.useState([]);
-    const [recommendedMovies, setRecommendedMovies] = React.useState([]); // para movies recomendadas en la vista movieDetails
-
     // estados para la ruta de categories
     const [moviesPerCategories, setMoviesPerCategories] = React.useState({
         moviesCtg: [],
         errorMoviesCtg: "",
         loadingMoviesCtg: true,
     });
+
+    const [trendingMovies, setTrendingMovies] = React.useState({
+        trending: [],
+        errorTrendingMovies: "",
+        loadingTrengingMovies: true
+    });
+
+    const [categories, setCategories] = React.useState([]); // listado de categorias en dashboard
+    const [categoriesPerMovie, setCategoriesPerMovie] = React.useState([]); // para categorias por movie abierta
+    const [recommendedMovies, setRecommendedMovies] = React.useState([]); // para movies recomendadas en la vista movieDetails
 
     // crear env para api_key
     const API_KEY = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwMTkyNDk5MDkwOGE4YWY2ODFmMjhkYTk5MjRkM2ZiNSIsIm5iZiI6MTc2MzMzNjQyNy4zOTUsInN1YiI6IjY5MWE2MGViYTE2OWY1ZjMxMTQ0Njg0OSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.rMrFZ334iZwue2dMoafUSwb8a-QdXeeoeVEKGFhto34";
@@ -39,10 +45,12 @@ export function ApiProvider({children}) {
         }
     };
 
-    //api para populars:
+    //api para populars vista dashboard:
     const API = "https://api.themoviedb.org/3/movie/popular?language=es-MX";
-    //api para categorias:
+    //api para lista de categorias:
     const API_CATEGORIES = "https://api.themoviedb.org/3/genre/movie/list";
+    //api para vista de trending movies:
+    const API_TRENDING = "https://api.themoviedb.org/3/trending/movie/week?language=es-MX"; // tendencias de la semana
 
     // este es el llamado inicial a la API para obtener peliculas para el home.
 
@@ -163,6 +171,33 @@ export function ApiProvider({children}) {
         }
     }
 
+    // fetch para trending movies.
+
+    async function fetchTrendingMovies() {
+        try {
+            const request = await fetch(API_TRENDING, options);
+            const resolve = await request.json();
+            const data = resolve.results;
+
+            if (data.length > 0) {
+                // actualizamos el estado
+                setTrendingMovies(prev => ({
+                    ...prev,
+                    trending: data || [],
+                    errorTrendingMovies: "",
+                    loadingTrengingMovies: false
+                }));
+            }
+        } catch (error) {
+            // actualizamos el estado
+            setTrendingMovies(prev => ({
+                ...prev,
+                errorTrendingMovies: "Error fetching trending movies per week",
+                loadingTrengingMovies: false
+            }));
+        }
+    }
+
     const moviesData = {
         state, 
         fetchRatedMovies, 
@@ -173,7 +208,9 @@ export function ApiProvider({children}) {
         fetchMoviesPerCategory,
         moviesPerCategories,
         categoriesPerMovie,
-        recommendedMovies
+        recommendedMovies,
+        fetchTrendingMovies,
+        trendingMovies
     }; // pasamos esos datos a los componentes que lo necesiten con el provider y el context creado
 
     return (

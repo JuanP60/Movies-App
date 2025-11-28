@@ -1,7 +1,7 @@
 import { HashRouter, Routes, Route } from "react-router-dom";
 import { ApiProvider } from "./ProviderApiTMDB";
 import { Home } from "./Home/index"
-import { Trending } from "./Home/Trending/index";
+import { Trending } from "./Home/Trending/Trending";
 import { Favorites } from "./Home/Favorites/index";
 import { MovieInfo } from "./Home/MovieInfo/MovieInfo";
 import { Categories } from "./Home/Categories/Categories";
