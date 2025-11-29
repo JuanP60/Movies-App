@@ -1,6 +1,6 @@
 import React from "react";
 import { Header } from "../../../ui/Header/Header";
-import { useApiTMDB } from "../../ProviderApiTMDB";
+import { useApiTMDB } from "../../../hooks/ProviderApiTMDB";
 import { useNavigate } from "react-router-dom";
 
 function Trending() {

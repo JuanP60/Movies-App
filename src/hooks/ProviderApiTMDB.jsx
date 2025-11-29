@@ -4,12 +4,6 @@ import React, {useContext} from "react";
 const MoviesContext = React.createContext();
 
 export function ApiProvider({children}) {
-    // estados home, peliculas iniciales
-    const [state, setState] = React.useState({
-        movies: [],
-        error: "",
-        loading: true,
-    });
 
     // estados para ruta de movie details.
     const [movieDetailsState, setMovieDetailsState] = React.useState({
@@ -44,44 +38,10 @@ export function ApiProvider({children}) {
         Authorization: `Bearer ${API_KEY}`
         }
     };
-
-    //api para populars vista dashboard:
-    const API = "https://api.themoviedb.org/3/movie/popular?language=es-MX";
     //api para lista de categorias:
     const API_CATEGORIES = "https://api.themoviedb.org/3/genre/movie/list";
     //api para vista de trending movies:
     const API_TRENDING = "https://api.themoviedb.org/3/trending/movie/week?language=es-MX"; // tendencias de la semana
-
-    // este es el llamado inicial a la API para obtener peliculas para el home.
-
-    async function fetchRatedMovies() {
-        try {
-            const response = await fetch(API, options); // llamado a la API.
-            const data = await response.json(); // pasamos a json
-            const result = data.results; // data ya transformada
-
-            if (result.length > 0) {
-                // actualizamos el estado:
-                setState(prev => ({
-                    ...prev,
-                    movies: result || [],
-                    error: "",
-                }));
-            }
-
-        } catch (error) {
-            setState(prev => ({
-                ...prev,
-                error: "No se pudo traer la data"
-            }));
-            console.log("No movies were filtered");
-        } finally {
-            setState(prev => ({
-                ...prev,
-                loading: false
-            }));
-        }
-    }
 
     // funcion para traer info por movie:
     
@@ -199,8 +159,6 @@ export function ApiProvider({children}) {
     }
 
     const moviesData = {
-        state, 
-        fetchRatedMovies, 
         movieDetailsState, 
         fetchMovieDetails, 
         fetchCategories, 

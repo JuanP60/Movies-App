@@ -1,7 +1,7 @@
 import React from "react";
 import { Header } from "../../../ui/Header/Header";
 import { useParams, useNavigate } from "react-router-dom";
-import { useApiTMDB } from "../../ProviderApiTMDB";
+import { useApiTMDB } from "../../../hooks/ProviderApiTMDB";
 
 function MovieInfo() {
 

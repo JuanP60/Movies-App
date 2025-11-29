@@ -1,5 +1,5 @@
 import React from "react";
-import { useApiTMDB } from "../../routes/ProviderApiTMDB";
+import { useApiTMDB } from "../../hooks/ProviderApiTMDB";
 import { useNavigate } from "react-router-dom";
 
 function CategoriesList() {

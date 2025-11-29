@@ -1,5 +1,5 @@
 import { HashRouter, Routes, Route } from "react-router-dom";
-import { ApiProvider } from "./ProviderApiTMDB";
+import { ApiProvider } from "../hooks/ProviderApiTMDB";
 import { Home } from "./Home/index"
 import { Trending } from "./Home/Trending/Trending";
 import { Favorites } from "./Home/Favorites/index";
