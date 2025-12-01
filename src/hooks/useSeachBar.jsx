@@ -25,7 +25,7 @@ export function useSearchBar() {
 
         // este es el llamado inicial a la API para obtener peliculas para el home.
 
-    async function fetchFilteredMovies(userInput = "") {
+    async function fetchFilteredMovies(userInput = "") { // valor inicial "" para evitar errores
         try {
             const response = await fetch(API, options); // llamado a la API.
             const data = await response.json(); // pasamos a json
@@ -43,7 +43,7 @@ export function useSearchBar() {
                 if (filter.length > 0) {
                     setState(prev => ({
                         ...prev,
-                        movies: filter || [],
+                        movies: filter,
                         error: "",
                     }));
                 } else if (filter.length === 0){
