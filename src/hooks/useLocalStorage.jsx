@@ -1,13 +1,14 @@
 import React from "react";
 
-function useLocalStorage({movies}) {
+export function useLocalStorage() {
+
     const [moviesLiked, setMoviesLiked] = React.useState({
         movies: [],
         error: "",
         loading: true
     });
 
-    // para cargar local desde el inicio
+    // para cargar local desde el inicio:
     React.useEffect(() => {
         const stored = localStorage.getItem("moviesLiked");
 
@@ -21,35 +22,65 @@ function useLocalStorage({movies}) {
         } else {
             setMoviesLiked(prev => ({
                 ...prev,
+                movies: [],
+                error: "",
                 loading: false
             }));
         }
     }, [])
 
-    // actualizar local storage cada que se agregue una nueva movie:
+    // toggle para manejar true or false al clickear sobre favIcon
+    const toggleFavorite = (movieID) => {
+        if (moviesLiked.movies?.some(movie => movie.id === movieID)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-    React.useEffect(() => {
-        if (movies.length > 0) {
-            setMoviesLiked(prev => ({
-                ...prev,
-                movies: movies,
-                error: "",
-                loading: false
-            }));
-            // guardamos en local pasando a json el array de movies.
-            localStorage.setItem("moviesLiked", JSON.stringify(movies));
+    const addMovie = (movie) =>  { 
+        if (movie) {
+            setMoviesLiked(prev => {
+                const updatedMovies = [...prev.movies, movie];
+
+                // guardamos en local pasando a json el array de movies.
+                localStorage.setItem("moviesLiked", JSON.stringify(updatedMovies));
+
+                return {
+                    ...prev,
+                    movies: updatedMovies, // agregamos nueva movie sin reemplazar las que ya teniamos
+                    error: "",
+                    loading: false
+                }
+            });
         } else {
             setMoviesLiked(prev => ({
-                ...prev,
-                movies: [],
-                error: "No hay películas favoritas",
-                loading: false
+               ...prev,
+               movies: [],
+               error: "La movie no tiene datos que guardar",
+               loading: false 
             }));
             localStorage.setItem("moviesLiked", JSON.stringify([]));
         }
-    }, [movies])
+    }
 
-    return { moviesLiked }// variables que guardan las movies que el user le dio corazoncito, debo crear componente solo para ese corazon.
+    const removeMovie = (movieId) => {
+        // filtramos por id para remover la movie
+        const filterFavMovies = moviesLiked.movies?.filter((mov) => mov.id !== movieId);
+        // lista actualizada:
+        setMoviesLiked(prev => ({
+            ...prev,
+            movies: filterFavMovies,
+            error: "",
+            loading: false
+        }));
+        localStorage.setItem("moviesLiked", JSON.stringify(filterFavMovies));
+    }
+
+    return { 
+        moviesLiked, 
+        addMovie, 
+        removeMovie, 
+        toggleFavorite 
+    }// variables que guardan las movies que el user le dio corazoncito,
 }
-
-export {useLocalStorage};
