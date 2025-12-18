@@ -11,7 +11,7 @@ function FavoritesFunc({toggle, movieID, movieData, addMovie, removeMovie}) {
     return (
         <button
         onClick={handleClick}
-        className="z-50 cursor-pointer transition transform hover:-translate-y-1 hover:scale-3d"
+        className="z-50 cursor-pointer transform transition-all duration-200 ease-out hover:-translate-y-1 hover:scale-110"
         >
             {toggle ? "❤️" : "🤍"}
         </button>
