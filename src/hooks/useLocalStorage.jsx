@@ -66,7 +66,7 @@ export function useLocalStorage() {
 
     const removeMovie = (movieId) => {
         // filtramos por id para remover la movie
-        const filterFavMovies = moviesLiked.movies?.filter((mov) => mov.id !== movieId);
+        const filterFavMovies = moviesLiked.movies?.filter(mov => mov.id !== movieId);
         // lista actualizada:
         setMoviesLiked(prev => ({
             ...prev,

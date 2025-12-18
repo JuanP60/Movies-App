@@ -2,10 +2,13 @@ import React from "react";
 import { Header } from "../../../ui/Header/Header";
 import { useApiTMDB } from "../../../hooks/ProviderApiTMDB";
 import { useNavigate } from "react-router-dom";
+import { useLocalStorage } from "../../../hooks/useLocalStorage";
+import { FavoritesFunc } from "../../../ui/Favorites/FavoritesFunc";
 
 function Trending() {
 
     const {fetchTrendingMovies, trendingMovies} = useApiTMDB();
+    const { toggleFavorite, addMovie, removeMovie } = useLocalStorage();
     const navigate = useNavigate();
 
     const baseURL = "https://image.tmdb.org/t/p/"; // para construir imagenes, url base
@@ -29,15 +32,26 @@ function Trending() {
                 <h1 className="text-center mb-7">Trending movies of this week!</h1>
                 <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 justify-items-center">
                     {trendingMovies.trending?.map(movie => (
-                    <li key={movie.id} onClick={() => routeMovieDetails(movie.id)}>
-                        <div className="w-[400px] h-[500px] overflow-hidden rounded-xl cursor-pointer transition transform hover:-translate-y-2 hover:scale-105">
-                            <img
-                            src={`${baseURL}${size}/${movie.poster_path}`} 
-                            alt="movies-poster"
-                            className="w-full h-full object-cover"
+                        <div key={movie.id}>
+
+                            <FavoritesFunc 
+                            toggle={toggleFavorite(movie.id)}
+                            movieID={movie.id}
+                            movieData={movie}
+                            addMovie={addMovie}
+                            removeMovie={removeMovie}
                             />
+
+                            <li onClick={() => routeMovieDetails(movie.id)}>
+                                <div className="w-[400px] h-[500px] overflow-hidden rounded-xl cursor-pointer transition transform hover:-translate-y-2 hover:scale-105">
+                                    <img
+                                    src={`${baseURL}${size}/${movie.poster_path}`} 
+                                    alt="movies-poster"
+                                    className="w-full h-full object-cover"
+                                    />
+                                </div>
+                            </li>
                         </div>
-                    </li>
                     ))}
                 </ul>
             </div>
