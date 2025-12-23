@@ -1,5 +1,6 @@
 import React from "react";
 import { Header } from "../../../ui/Header/Header";
+import { Footer } from "../../../ui/Footer/Footer";
 import { useParams, useNavigate } from "react-router-dom";
 import { useApiTMDB } from "../../../hooks/ProviderApiTMDB";
 import { useLocalStorage } from "../../../hooks/useLocalStorage";
@@ -50,8 +51,9 @@ function MovieInfo() {
                 />
 
                 <div className="flex justify-center gap-6">
-                    <div>
+                    <div className="w-[400px] h-[500px] overflow-hidden rounded-xl cursor-pointer transition transform hover:-translate-y-2 hover:scale-105">
                         <img 
+                        className="w-full h-full object-cover"
                         src={`${baseURL}${size}${movieDetailsState.movieDetails.poster_path}`} 
                         alt="movie-poster" />
                     </div>
@@ -110,6 +112,8 @@ function MovieInfo() {
                     </ul>     
                 </div>
             </div>
+
+            <Footer />
         </div>
     );
 }

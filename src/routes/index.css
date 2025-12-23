@@ -1,1 +1,18 @@
 @import "tailwindcss";
+
+@theme {
+    --color-background: #0F0F0F;
+    --color-footer: #121212; /* rojo claro */
+    --color-footer-border: #A73737;
+
+    --color-text-primary: #EDEDED;
+    --color-text-secondary: #D1D5DB;
+
+    --font-poppins: "Poppins", system-ui, sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-background text-text-primary font-poppins;
+  }
+}

@@ -1,5 +1,6 @@
 import React from "react";
 import { Header } from "../../../ui/Header/Header";
+import { Footer } from "../../../ui/Footer/Footer";
 import { useParams, useNavigate } from "react-router-dom";
 import { useApiTMDB } from "../../../hooks/ProviderApiTMDB";
 
@@ -45,6 +46,8 @@ function Categories () {
                     ))}
                 </ul>   
             </div>
+
+            <Footer />
         </>
     );
 }

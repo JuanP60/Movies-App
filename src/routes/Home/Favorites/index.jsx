@@ -1,4 +1,5 @@
 import { Header } from "../../../ui/Header/Header";
+import { Footer } from "../../../ui/Footer/Footer";
 import { useLocalStorage } from "../../../hooks/useLocalStorage";
 import { FavoritesFunc } from "../../../ui/Favorites/FavoritesFunc";
 import { useNavigate } from "react-router-dom";
@@ -51,7 +52,8 @@ function Favorites() {
                     ))}
                 </ul>
             </div>
-
+            
+            <Footer />
         </div>
     );
 }

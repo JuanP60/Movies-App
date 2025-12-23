@@ -1,5 +1,6 @@
 import React from "react";
 import { Header } from "../../../ui/Header/Header";
+import { Footer } from "../../../ui/Footer/Footer";
 import { useApiTMDB } from "../../../hooks/ProviderApiTMDB";
 import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "../../../hooks/useLocalStorage";
@@ -55,7 +56,8 @@ function Trending() {
                     ))}
                 </ul>
             </div>
-
+            
+            <Footer />
         </>
     );
 }
