@@ -19,7 +19,7 @@ function CategoriesList() {
     };
 
     return (
-        <div className="flex flex-col items-center mt-80">
+        <div className="flex flex-col items-center mt-20">
             <ul className="flex gap-1.5">
                 {categories.map(category => (
                     <li 
