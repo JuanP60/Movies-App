@@ -21,6 +21,7 @@ function Trending() {
 
     const routeMovieDetails = (id) => {
         navigate(`/movie/${id}`);
+        window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     if (!!trendingMovies.errorTrendingMovies) return <p>Error en fetch de trending movies: {trendingMovies.errorTrendingMovies}</p>
@@ -33,7 +34,7 @@ function Trending() {
             </div>
 
             <div className="flex flex-col justify-center max-w-10xl mt-20">
-                <h1 className="text-center mb-7">Trending movies of this week!</h1>
+                <h1 className="text-center text-xl mb-10">Trending movies of this week!</h1>
                 <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 justify-items-center">
                     {trendingMovies.trending?.map(movie => (
                         <div key={movie.id}>

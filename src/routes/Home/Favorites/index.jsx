@@ -28,7 +28,7 @@ function Favorites() {
             </div>
             
             <div className="flex flex-col justify-center max-w-10xl mt-20">
-                <h1 className="text-center mb-7">Favorites Page</h1>
+                <h1 className="text-center text-xl mb-10">Favorites Page</h1>
                 <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 justify-items-center">
                     {moviesLiked.movies?.map(movie => (
                         <div key={movie.id}>

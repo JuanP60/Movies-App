@@ -40,7 +40,7 @@ function MovieInfo() {
     return (
         <div>
             <Header />
-            <div className="flex flex-col gap-6 mt-32">
+            <div className="flex flex-col gap-6 mt-20">
 
                 <FavoritesFunc 
                 toggle={toggleFavorite(movieId)}
@@ -64,10 +64,10 @@ function MovieInfo() {
                                 <h1>{movieDetailsState.movieDetails.title}</h1>
                                 <p>stars {movieDetailsState.movieDetails.vote_average}</p>
                             </div> 
-                            <p className="text-wrap">{movieDetailsState.movieDetails.overview}</p>
+                            <p className="text-wrap mt-5">{movieDetailsState.movieDetails.overview}</p>
                         </div>   
 
-                        <div className="mt-2">
+                        <div className="mt-5">
                             <ul className="flex gap-2">
                                 {categoriesPerMovie.map(category => (
                                     <li key={category.id}>{category.name}</li>
@@ -81,7 +81,7 @@ function MovieInfo() {
 
 
             <div className="flex flex-col justify-center max-w-10xl mt-28">
-                <h2 className="text-center">Peliculas Similares</h2>
+                <h2 className="text-center text-xl">Peliculas Similares</h2>
 
                 <div className="flex justify-center max-w-10xl mt-12">
                     <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 justify-items-center">
