@@ -23,6 +23,8 @@ function MovieInfo() {
     const baseURL = "https://image.tmdb.org/t/p/"; // para construir imagenes, url base
     const size = "w400";
 
+    const rating = Math.round(movieDetailsState.movieDetails.vote_average / 2); // escala de 5
+
     // buscamos la movie:
 
     React.useEffect(() => {
@@ -42,27 +44,29 @@ function MovieInfo() {
             <Header />
             <div className="flex flex-col gap-6 mt-20">
 
-                <FavoritesFunc 
-                toggle={toggleFavorite(movieId)}
-                movieID={movieId}
-                movieData={movieDetailsState.movieDetails}
-                addMovie={addMovie}
-                removeMovie={removeMovie}
-                />
-
                 <div className="flex justify-center gap-6">
-                    <div className="w-[400px] h-[500px] overflow-hidden rounded-xl cursor-pointer transition transform hover:-translate-y-2 hover:scale-105">
-                        <img 
-                        className="w-full h-full object-cover"
-                        src={`${baseURL}${size}${movieDetailsState.movieDetails.poster_path}`} 
-                        alt="movie-poster" />
+
+                    <div className="relative">
+                        <FavoritesFunc 
+                            toggle={toggleFavorite(movieId)}
+                            movieID={movieId}
+                            movieData={movieDetailsState.movieDetails}
+                            addMovie={addMovie}
+                            removeMovie={removeMovie}
+                        />
+                        <div className="w-[400px] h-[500px] overflow-hidden rounded-xl cursor-pointer transition transform hover:-translate-y-2 hover:scale-105">
+                            <img 
+                            className="w-full h-full object-cover"
+                            src={`${baseURL}${size}${movieDetailsState.movieDetails.poster_path}`} 
+                            alt="movie-poster" />
+                        </div>
                     </div>
 
                     <div className="flex flex-col">
                         <div className="max-w-lg">
-                            <div className="flex gap-2">
-                                <h1>{movieDetailsState.movieDetails.title}</h1>
-                                <p>stars {movieDetailsState.movieDetails.vote_average}</p>
+                            <div className="flex items-center gap-4">
+                                <h1 className="text-2xl">{movieDetailsState.movieDetails.title}</h1>
+                                <p>{`⭐`.repeat(rating)}</p>
                             </div> 
                             <p className="text-wrap mt-5">{movieDetailsState.movieDetails.overview}</p>
                         </div>   
@@ -70,7 +74,7 @@ function MovieInfo() {
                         <div className="mt-5">
                             <ul className="flex gap-2">
                                 {categoriesPerMovie.map(category => (
-                                    <li key={category.id}>{category.name}</li>
+                                    <li className="border border-red-950 rounded-xl p-2 hover:bg-red-950" key={category.id}>{category.name}</li>
                                 ))}
                             </ul>
                         </div>
@@ -89,15 +93,15 @@ function MovieInfo() {
                             movie.poster_path ? (
                                 <div key={movie.id}>
 
-                                    <FavoritesFunc 
-                                    toggle={toggleFavorite(movie.id)}
-                                    movieID={movie.id}
-                                    movieData={movie}
-                                    addMovie={addMovie}
-                                    removeMovie={removeMovie}
-                                    />
+                                    <li onClick={() => routingNewMovie(movie.id)} className="relative">
 
-                                    <li onClick={() => routingNewMovie(movie.id)}>
+                                        <FavoritesFunc 
+                                            toggle={toggleFavorite(movie.id)}
+                                            movieID={movie.id}
+                                            movieData={movie}
+                                            addMovie={addMovie}
+                                            removeMovie={removeMovie}
+                                        />
                                         <div className="w-[400px] h-[500px] overflow-hidden rounded-xl cursor-pointer transition transform hover:-translate-y-2 hover:scale-105">
                                             <img
                                             src={`${baseURL}${size}${movie.poster_path}`}

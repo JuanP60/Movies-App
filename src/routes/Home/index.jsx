@@ -5,7 +5,7 @@ import { Footer } from "../../ui/Footer/Footer";
 
 function Home() {
     return (
-        <div>
+        <div className="min-h-screen flex flex-col">
             <section className=" relative h-[70vh] bg-cover bg-center bg-amber-50" style={{backgroundImage: "url('/bg-home.jpg')"}}>
                 <div className="absolute top-0 left-0 w-full h-14 bg-linear-to-b from-black to-transparent" />
                 <Header />

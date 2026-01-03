@@ -42,15 +42,15 @@ function Categories () {
                         movie.poster_path ? (
                             <div key={movie.id}>
 
-                                <FavoritesFunc
-                                toggle={toggleFavorite(movie.id)}
-                                movieID={movie.id}
-                                movieData={movie}
-                                addMovie={addMovie}
-                                removeMovie={removeMovie}
-                                />
+                                <li onClick={() => routeMovie(movie.id)} className="relative">
 
-                                <li onClick={() => routeMovie(movie.id)}>
+                                    <FavoritesFunc
+                                        toggle={toggleFavorite(movie.id)}
+                                        movieID={movie.id}
+                                        movieData={movie}
+                                        addMovie={addMovie}
+                                        removeMovie={removeMovie}
+                                    />
                                     <div className="w-[400px] h-[500px] overflow-hidden rounded-xl cursor-pointer transition transform hover:-translate-y-2 hover:scale-105">
                                         <img 
                                         src={`${baseURL}${size}${movie.poster_path}`} 

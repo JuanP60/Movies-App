@@ -5,6 +5,7 @@ import { useApiTMDB } from "../../../hooks/ProviderApiTMDB";
 import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "../../../hooks/useLocalStorage";
 import { FavoritesFunc } from "../../../ui/Favorites/FavoritesFunc";
+import { Loader } from "../../../ui/Loader/Loader"
 
 function Trending() {
 
@@ -25,29 +26,30 @@ function Trending() {
     }
 
     if (!!trendingMovies.errorTrendingMovies) return <p>Error en fetch de trending movies: {trendingMovies.errorTrendingMovies}</p>
-    if (!!trendingMovies.loadingTrendingMovies) return <p>Cargando trending movies...</p>
-
+   
     return (
         <>
             <div className="" >
                 <Header />
             </div>
-
+ 
             <div className="flex flex-col justify-center max-w-10xl mt-20">
                 <h1 className="text-center text-xl mb-10">Trending movies of this week!</h1>
+
                 <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 justify-items-center">
+
                     {trendingMovies.trending?.map(movie => (
                         <div key={movie.id}>
 
-                            <FavoritesFunc 
-                            toggle={toggleFavorite(movie.id)}
-                            movieID={movie.id}
-                            movieData={movie}
-                            addMovie={addMovie}
-                            removeMovie={removeMovie}
-                            />
+                            <li onClick={() => routeMovieDetails(movie.id)} className="relative">
 
-                            <li onClick={() => routeMovieDetails(movie.id)}>
+                                <FavoritesFunc 
+                                    toggle={toggleFavorite(movie.id)}
+                                    movieID={movie.id}
+                                    movieData={movie}
+                                    addMovie={addMovie}
+                                    removeMovie={removeMovie}
+                                />
                                 <div className="w-[400px] h-[500px] overflow-hidden rounded-xl cursor-pointer transition transform hover:-translate-y-2 hover:scale-105">
                                     <img
                                     src={`${baseURL}${size}/${movie.poster_path}`} 
@@ -61,6 +63,7 @@ function Trending() {
                 </ul>
             </div>
             
+
             <Footer />
         </>
     );

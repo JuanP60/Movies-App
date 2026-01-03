@@ -9,7 +9,10 @@ export function useLocalStorage() {
     });
 
     // para cargar local desde el inicio:
-    React.useEffect(() => {
+
+
+    const syncFavorites = () => {
+
         const stored = localStorage.getItem("moviesLiked");
 
         if (stored) {
@@ -27,7 +30,24 @@ export function useLocalStorage() {
                 loading: false
             }));
         }
+    }; // sincronizar datos al cambiar de pagina
+
+    React.useEffect(() => {
+        syncFavorites();
+
+        // para sincronizar cuanddo se sale de la pagina:
+
+        const handleVisibility = () => {
+            if (!document.hidden) {
+                syncFavorites();
+            }
+        };
+
+        document.addEventListener("visibilitychange", handleVisibility);
+        return () =>
+            document.removeEventListener("visibilitychange", handleVisibility);
     }, [])
+  
 
     // toggle para manejar true or false al clickear sobre favIcon
     const toggleFavorite = (movieID) => {
