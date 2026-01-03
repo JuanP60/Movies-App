@@ -33,7 +33,7 @@ function MoviesDashBoard() {
             
             {!!state.error ? <p className="mt-8 text-center">{state.error}</p> : 
             <div className="flex justify-center max-w-10xl mt-20">
-                <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 justify-items-center">
+                <ul className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 justify-items-center">
                     {state.movies?.map(movie => (
                         <div key={movie.id}>
                             <li onClick={() => routeMovie(movie.id)} className="relative">
@@ -44,7 +44,7 @@ function MoviesDashBoard() {
                                     addMovie={addMovie}
                                     removeMovie={removeMovie}
                                 />
-                                <div className="w-[400px] h-[500px] overflow-hidden rounded-xl cursor-pointer transition transform hover:-translate-y-2 hover:scale-105">
+                                <div className="w-[280px] sm:w-[320px] md:w-[360px] lg:w-[400px] aspect-2/3 overflow-hidden rounded-xl cursor-pointer transition transform hover:-translate-y-2 hover:scale-105">
                                     <img 
                                     src={`${baseURL}${size}${movie.poster_path}`} 
                                     alt="poster-img"

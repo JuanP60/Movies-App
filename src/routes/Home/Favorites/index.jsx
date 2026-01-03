@@ -29,7 +29,7 @@ function Favorites() {
             
             <div className="flex flex-col justify-center max-w-10xl mt-20">
                 <h1 className="text-center text-xl mb-10">Favorites Page</h1>
-                <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 justify-items-center">
+                <ul className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 justify-items-center">
                     {moviesLiked.movies?.map(movie => (
                         <div key={movie.id}>
 
@@ -42,7 +42,7 @@ function Favorites() {
                                     addMovie={addMovie}
                                     removeMovie={removeMovie}
                                 />
-                                <div className="w-[400px] h-[500px] overflow-hidden rounded-xl cursor-pointer transition transform hover:-translate-y-2 hover:scale-105">
+                                <div className="w-[280px] sm:w-[320px] md:w-[360px] lg:w-[400px] aspect-2/3 overflow-hidden rounded-xl cursor-pointer transition transform hover:-translate-y-2 hover:scale-105">
                                     <img
                                     src={`${baseURL}${size}${movie.poster_path}`}
                                     alt="favorite-poster-img" 
