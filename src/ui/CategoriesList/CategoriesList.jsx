@@ -24,7 +24,7 @@ function CategoriesList() {
                 {categories.map(category => (
                     <li 
                     key={category.id} 
-                    className="cursor-pointer border border-red-950 rounded-xl p-2 hover:bg-red-950"
+                    className="cursor-pointer border border-red-950 rounded-xl p-1 sm:p-2 sm:text-sm hover:bg-red-950"
                     onClick={() => categoriesRoute(category.id, category.name)}
                     >{category.name}</li>
                 ))}
