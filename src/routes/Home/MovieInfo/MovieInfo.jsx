@@ -5,6 +5,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useApiTMDB } from "../../../hooks/ProviderApiTMDB";
 import { useLocalStorage } from "../../../hooks/useLocalStorage";
 import { FavoritesFunc } from "../../../ui/Favorites/FavoritesFunc";
+import { Loader } from "../../../ui/Loader/Loader"
 
 function MovieInfo() {
 
@@ -37,14 +38,20 @@ function MovieInfo() {
     }
 
     if (!!movieDetailsState.errorMovieDetails) return <p>Error en la consulta de movie details: {movieDetailsState.errorMovieDetails}</p>
-    if (!!movieDetailsState.loadingMovieDetails) return <p>Cargando...</p>
+    if (!!movieDetailsState.loadingMovieDetails) return (
+        <div>
+            <Header />
+            <Loader />
+            <Footer />
+        </div>
+    )
 
     return (
         <div>
             <Header />
             <div className="flex flex-col gap-6 mt-20">
 
-                <div className="flex justify-center gap-6">
+                <div className=" flex flex-col sm:flex-row md:flex-row lg:flex-row items-center sm:items-start lg:justify-center gap-6 sm:p-3">
 
                     <div className="relative">
                         <FavoritesFunc 
@@ -54,7 +61,7 @@ function MovieInfo() {
                             addMovie={addMovie}
                             removeMovie={removeMovie}
                         />
-                        <div className="w-[400px] h-[500px] overflow-hidden rounded-xl cursor-pointer transition transform hover:-translate-y-2 hover:scale-105">
+                        <div className="w-[280px] sm:w-[320px] md:w-[360px] lg:w-[400px] aspect-2/3 overflow-hidden rounded-xl cursor-pointer transition transform hover:-translate-y-2 hover:scale-105">
                             <img 
                             className="w-full h-full object-cover"
                             src={`${baseURL}${size}${movieDetailsState.movieDetails.poster_path}`} 
@@ -63,18 +70,18 @@ function MovieInfo() {
                     </div>
 
                     <div className="flex flex-col">
-                        <div className="max-w-lg">
+                        <div className="max-w-lg p-5 md:p-0">
                             <div className="flex items-center gap-4">
-                                <h1 className="text-2xl">{movieDetailsState.movieDetails.title}</h1>
+                                <h1 className="text-xl md:text-2xl">{movieDetailsState.movieDetails.title}</h1>
                                 <p>{`⭐`.repeat(rating)}</p>
                             </div> 
-                            <p className="text-wrap mt-5">{movieDetailsState.movieDetails.overview}</p>
+                            <p className="text-wrap text-sm sm:text-base mt-5">{movieDetailsState.movieDetails.overview}</p>
                         </div>   
 
-                        <div className="mt-5">
+                        <div className="mt-5 p-3 md:p-0">
                             <ul className="flex gap-2">
                                 {categoriesPerMovie.map(category => (
-                                    <li className="border border-red-950 rounded-xl p-2 hover:bg-red-950" key={category.id}>{category.name}</li>
+                                    <li className="border border-red-950 text-sm md:text-base rounded-xl p-2 hover:bg-red-950" key={category.id}>{category.name}</li>
                                 ))}
                             </ul>
                         </div>

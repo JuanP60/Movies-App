@@ -3,6 +3,7 @@ import { Footer } from "../../../ui/Footer/Footer";
 import { useLocalStorage } from "../../../hooks/useLocalStorage";
 import { FavoritesFunc } from "../../../ui/Favorites/FavoritesFunc";
 import { useNavigate } from "react-router-dom";
+import { Loader } from "../../../ui/Loader/Loader"
 
 function Favorites() {
 
@@ -17,9 +18,15 @@ function Favorites() {
         window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
-    if (!!moviesLiked.loading) return <p>Cargando peliculas favoritas...</p>
     if (!!moviesLiked.error) return <p>{moviesLiked.error}</p>
-    // agregar estructura de map con estilos ya creados en otros componentes. base url. default size.
+    
+    if (!!moviesLiked.loading) return (
+        <div>
+            <Header />
+            <Loader />
+            <Footer />
+        </div>
+    );
 
     return (
         <div>

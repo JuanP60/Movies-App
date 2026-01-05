@@ -4,7 +4,7 @@ import SearchIcon from '@mui/icons-material/Search';
 
 function MoviesSearch({onSearchMovie}) {
     return (
-        <div className="w-full max-w-6xl mx-auto mt-14 relative">
+        <div className="w-full max-w-6xl mx-auto mt-14 p-3 relative">
             <SearchIcon  className="absolute left-2 top-1/2 -translate-y-1/2 text-text-primary"/>
             <input
             type="text" 

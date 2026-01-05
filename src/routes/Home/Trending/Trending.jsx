@@ -26,6 +26,13 @@ function Trending() {
     }
 
     if (!!trendingMovies.errorTrendingMovies) return <p>Error en fetch de trending movies: {trendingMovies.errorTrendingMovies}</p>
+    if (!!trendingMovies.loadingTrengingMovies) return (
+        <div>
+            <Header />
+            <Loader />
+            <Footer />
+        </div>
+    )
    
     return (
         <>

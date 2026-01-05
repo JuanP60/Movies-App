@@ -5,6 +5,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useApiTMDB } from "../../../hooks/ProviderApiTMDB";
 import { FavoritesFunc } from "../../../ui/Favorites/FavoritesFunc";
 import { useLocalStorage } from "../../../hooks/useLocalStorage";
+import { Loader } from "../../../ui/Loader/Loader";
 
 // ruta por categoria
 function Categories () {
@@ -30,7 +31,13 @@ function Categories () {
         navigate(`/movie/${id}`);
     }
 
-    // todo, traer nombre de categoria a esta ruta.
+    if (!!moviesPerCategories.loadingMoviesCtg) return (
+        <div>
+            <Header />
+            <Loader />
+            <Footer />
+        </div>
+    )
 
     return (
         <>

@@ -20,11 +20,11 @@ function CategoriesList() {
 
     return (
         <div className="flex justify-center mt-20">
-            <ul className="flex justify-center max-w-6xl flex-wrap gap-3.5">
+            <ul className="flex justify-center max-w-6xs lg:max-w-6xl flex-wrap gap-3.5">
                 {categories.map(category => (
                     <li 
                     key={category.id} 
-                    className="cursor-pointer border border-red-950 rounded-xl p-1 sm:p-2 sm:text-sm hover:bg-red-950"
+                    className="cursor-pointer border border-red-950 rounded-xl p-1 sm:p-2 text-sm lg:text-base hover:bg-red-950"
                     onClick={() => categoriesRoute(category.id, category.name)}
                     >{category.name}</li>
                 ))}
